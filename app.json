@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "scheme": "samlfirebaseexample",
+    "name": "TestApp",
+    "slug": "TestApp",
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
