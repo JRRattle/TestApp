@@ -1,146 +1,89 @@
-import { StyleSheet, Text,Button, Alert, TextInput, View, Pressable } from 'react-native'
-import React, { useState} from 'react'
-import { router } from 'expo-router'
-import { db } from '../firebase/firebaseConfig'
-import {setDoc, doc, collection} from "firebase/firestore";
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
 
-
-
-
-
-
-const home = () => {
-  const [formData, setFormData] = useState({
-    customerId: '',
-    jobId: '',
-    addressLine1: '',
-    city: '',
-    state: '', 
-    description: '',
-    allotedTime: '',
-    pricePerService: '',
-  });
-
-  const handleInputChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
+const home =() => {
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    return now.toLocaleString();
   };
-  const newJobDoc = doc(collection(db, "jobs"));
-  
-  const handleSubmit = async () => {
-    if (!formData.customerId || !formData.jobId || !formData.addressLine1
-      || !formData.city || !formData.state || !formData.description
-      || !formData.allotedTime || !formData.pricePerService
-    ) {
-      Alert.alert('Validation Error', 'All fields are required.');
-    } else {
-      try{
-        await setDoc(newJobDoc, formData);
-        Alert.alert('Form Submitted', JSON.stringify(formData, null, 2));
-      } catch (error) {
-        Alert.alert('Submission Error', error.message)
-      } 
-      // Perform further actions like API calls here
-    }
-  };
-
-  
 
   return (
     <View style={styles.container}>
-      
-      <Pressable onPress={() => {router.dismiss(1)}}>
-        <Text>BACK</Text>
-      </Pressable>
-        <Pressable onPress={() =>{router.push("/viewSchedules")}}>                        
-          <Text>
-            View Schedule
-         </Text>
-        </Pressable>
-        
-      <TextInput
-        style={styles.input}
-        placeholder="Customer ID"
-        value={formData.customerId}
-        onChangeText={(value) => handleInputChange('customerId', value)}
-      />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Job ID"
-        value={formData.jobId}
-        onChangeText={(value) => handleInputChange('jobId', value)}
-      />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Address Line 1"
-        value={formData.addressLine1}
-        onChangeText={(value) => handleInputChange('addressLine1', value)}
-      />
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.mockEmail}>mockemail@example.com</Text>
+        <Text style={styles.dateTime}>{getCurrentDateTime()}</Text>
+      </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="City"
-        value={formData.city}
-        onChangeText={(value) => handleInputChange('city', value)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="State"
-        value={formData.state}
-        onChangeText={(value) => handleInputChange('state', value)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Description"
-        value={formData.description}
-        onChangeText={(value) => handleInputChange('description', value)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Alloted Time in man-hours"
-        value={formData.allotedTime}
-        onChangeText={(value) => handleInputChange('allotedTime', value)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Price per Service"
-        value={formData.pricePerService}
-        onChangeText={(value) => handleInputChange('pricePerService', value)}
-      />
-      
-      <Button title="Submit" onPress={handleSubmit} />
+      {/* Buttons */}
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={styles.button}
+                          onPress={() => router.push("/createJob")}>
+          <Text style={styles.buttonText}>Create New Job</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}
+                          onPress={() => router.push("/viewJobs")}>
+          <Text style={styles.buttonText}>View Jobs</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}
+                          onPress={() => router.push("/viewSchedules")}>
+          <Text style={styles.buttonText}>Create New Schedule</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}
+                          onPress={() => router.push("/viewSchedules")} >
+          <Text style={styles.buttonText}>View Schedules</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  )
-}
-
-//<Button onPress={() =>{router.push("/addDoc")}}></Button>
+  );
+};
 
 const styles = StyleSheet.create({
-  header: {
-    fontSize: 25,
-  },
-  wrapperCustom: {
-    borderRadius: 8,
-    backgroundColor: "#E7E2D2",
-    padding: 6,
-  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#696969', // Dim gray
+    padding: 20,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
-  }
-})
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  mockEmail: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  dateTime: {
+    fontSize: 16,
+    fontStyle: 'italic',
+  },
+  buttonsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    width: 150,
+    height: 150,
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ADD8E6', // Baby blue
+    borderRadius: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+});
+
 export default home;
