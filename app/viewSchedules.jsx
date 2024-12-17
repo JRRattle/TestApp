@@ -17,8 +17,6 @@ const viewSchedule =() => {
    )};
    
 
-
-
 const styles = StyleSheet.create({
     container: {
       flex: 4,

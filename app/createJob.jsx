@@ -2,10 +2,19 @@
 import {doc, setDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig'
 import { StyleSheet, Text,Button, Alert, TextInput, View, Pressable } from 'react-native'
-import React, { useState} from 'react'
+import React, { useState} from 'react';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+
 
 const createJob = () =>{
+
+
+
+
 const [formData, setFormData] = useState({
     customerId: '',
     jobId: '',
@@ -35,23 +44,40 @@ const [formData, setFormData] = useState({
       } catch (error) {
         Alert.alert('Submission Error', error.message)
       } 
-      // Perform further actions like API calls here
+      
     }
   };
+    const [fontsLoaded] = useFonts({
+    'TekoBold': require('../fonts/Teko-Bold.ttf'),
+    'TekoLight': require('../fonts/Teko-Light.ttf'),
+    'TekoMedium': require('../fonts/Teko-Medium.ttf'),
+    'TekoRegular': require('../fonts/Teko-Regular.ttf'),
+    'TekoSemiBold': require('../fonts/Teko-SemiBold.ttf'),
+  });
 
-  
+  if (!fontsLoaded){
+    return (
+      console.log("fonts weren't loaded")
+    )
+  } else{
+
+
+
 
   return (
     <View style={styles.container}>
-      
-      <Pressable onPress={() => {router.dismiss(1)}}>
-        <Text>BACK</Text>
+      <Text style={styles.header}>Enter details about this job</Text>
+       {/*Back Button*/}
+      <Pressable onPress={() => router.dismiss(1)} style={styles.backButton}>
+        <Ionicons name="arrow-back" size={24} color="#333" />
+        <Text style={styles.backButtonText}>Back</Text>
       </Pressable>
-        <Pressable onPress={() =>{router.push("/viewSchedules")}}>                        
-          <Text>
-            View Schedule
-         </Text>
-        </Pressable>
+      {/*View Schedules Button*/}
+      <Pressable onPress={() => router.push('/viewJobs')} style={styles.viewButton}>
+        <Text style={styles.viewButtonText}>View Jobs</Text>
+        <MaterialIcons name='view-stream' size={24} color="#333" />
+      </Pressable>
+
         
       <TextInput
         style={styles.input}
@@ -111,14 +137,18 @@ const [formData, setFormData] = useState({
       
       <Button title="Submit" onPress={handleSubmit} />
     </View>
-  )
+      
+  )  }
 }
 
 
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 25,
+    alignSelf: 'center',
+    fontFamily: 'TekoBold',
+    fontSize: 24,
+    color: 'black'
   },
   wrapperCustom: {
     borderRadius: 8,
@@ -126,10 +156,9 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+      flex: 1,
+      justifyContent: 'center',
+      padding: 20,
   },
   input: {
     borderWidth: 1,
@@ -137,7 +166,36 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
-  }
+    textAlign: 'left'
+  },
+  viewButton: {
+    position: 'absolute',
+    top:16,
+    right: 16,
+    flexDirection: 'row',
+    padding: 8,
+    backgroundColor: '#ddd',
+    borderRadius: 4,
+  },
+  viewButtonText: {
+    color: '#333',
+    fontSize: 16,
+  },
+  backButton: {
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 16,
+    left: 16,
+    padding: 8,
+    backgroundColor: '#ddd',
+    borderRadius: 4,
+    alignItems: 'center',
+  },
+  backButtonText: {
+    color: '#333',
+    fontSize: 16,
+  },
+ 
 });
 
 export default createJob;

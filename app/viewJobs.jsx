@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db }from '../firebase/firebaseConfig';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
+import { router } from 'expo-router';
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+      const [fontsLoaded] = useFonts({
+      'TekoBold': require('../fonts/Teko-Bold.ttf'),
+      'TekoLight': require('../fonts/Teko-Light.ttf'),
+      'TekoMedium': require('../fonts/Teko-Medium.ttf'),
+      'TekoRegular': require('../fonts/Teko-Regular.ttf'),
+      'TekoSemiBold': require('../fonts/Teko-SemiBold.ttf'),
+    });
+
+
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -27,6 +39,13 @@ const JobsPage = () => {
     fetchJobs();
   }, []);
 
+  if (!fontsLoaded){
+    return (
+      console.log("fonts weren't loaded")
+    );
+  }
+
+  
   if (loading) {
     return (
       <View style={styles.centeredView}>
@@ -46,7 +65,16 @@ const JobsPage = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Job Listings</Text>
+      <Text style={styles.title}>Upcoming Jobs</Text>
+      <Pressable onPress={() => router.dismiss(1)} style={styles.backButton}>
+        <Ionicons name="arrow-back" size={24} color="#333" />
+        <Text style={styles.backButtonText}>Back</Text>
+      </Pressable>
+      <Pressable onPress={() => router.push('/createJob')} style={styles.viewButton}>
+        <Text style={styles.viewButtonText}>Create Job</Text>
+        <MaterialIcons name='add' size={24} color="#333" />
+      </Pressable>
+
       {jobs.length > 0 ? (
         <FlatList
           data={jobs}
@@ -84,6 +112,19 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  viewButton: {
+    position: 'absolute',
+    top:16,
+    right: 16,
+    flexDirection: 'row',
+    padding: 8,
+    backgroundColor: '#ddd',
+    borderRadius: 4,
+  },
+  viewButtonText: {
+    color: '#333',
+    fontSize: 16,
   },
   jobItem: {
     marginBottom: 20,

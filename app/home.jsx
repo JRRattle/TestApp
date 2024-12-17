@@ -27,7 +27,7 @@ const home =() => {
           <Text style={styles.buttonText}>View Jobs</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}
-                          onPress={() => router.push("/viewSchedules")}>
+                          onPress={() => router.push("/createSchedule")}>
           <Text style={styles.buttonText}>Create New Schedule</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}
