@@ -11,18 +11,7 @@ const viewSchedule =() => {
           <Text style={styles.header}>
               VIEW SCHEDULE</Text>
               <Pressable onPress={() => {router.push("/home")}}><Text>BACK</Text></Pressable>
-              {!isManager && (
-                  <>
-                      <Text style={styles.header}>IS EMPLOYEE</Text>
-                      <Pressable onPress={() => isManager = true} style={styles.wrapperCustom}><Text>CHANGE isManager Boolean</Text></Pressable>
-                  </>
-              )}
-              {isManager && (
-                  <>
-                      <Text style={styles.header}>IS MANAGER</Text>
-                      <Pressable onPress={() => isManager = false} style={styles.wrapperCustom}><Text>CHANGE isManager Boolean</Text></Pressable>
-                  </>
-              )}
+              <Text style={styles.header}>IS MANAGER</Text>
           </View>
           </>
    )};

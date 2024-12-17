@@ -1,0 +1,9 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "extensions": {
+    "firestore-user-document": "rowy/firestore-user-document@0.0.6"
+  }
+}
